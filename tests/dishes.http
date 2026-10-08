@@ -1,0 +1,41 @@
+@endpoint = http://localhost:3000/api/v1/dishes
+
+###
+# @name postADish
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+x-api-key: 1234567890
+
+{
+  "make": "Ferrari",
+  "model": "Auris",
+  "year": 2026
+}
+###
+@newDish = {{postADish.response.body._id}}
+
+###
+GET  {{endpoint}} HTTP/3.0
+content-type: application/json
+x-api-key: 1234567890
+###
+GET  {{endpoint}}/{{newDish}} HTTP/3.0
+content-type: application/json
+
+
+
+###
+
+DELETE  {{endpoint}}/6ab39ad46bcda005d5b2cabd HTTP/3.0
+content-type: application/json
+
+###
+
+PUT  {{endpoint}}/6ab39ad46bcda005d5b2cabd HTTP/3.0
+content-type: application/json
+
+###
+GET  http://localhost:1610/stormlight HTTP/3.0
+content-type: application/json
+
+###
