@@ -1,7 +1,8 @@
 import express, {Application, Request, Response} from "express" ;
 import dishRoutes from "./routes/dishes";
+import {env} from "./config/env";
 
-const PORT = process.env.PORT || 3000;
+const PORT = env.port
 
 const app: Application = express();
 
