@@ -41,12 +41,30 @@ export class DishController {
  };
 
   updateDish = async (req: Request, res: Response): Promise<void> => {
-    res.status(200).json({ success: true, 
-      data: `this is just dummy for now a response to the update dish by id request with dish id ${req.params.id}` }); 
-  };
+    try {
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const updatedDish = await dishService.updateDish(id, req.body);
+      if (!updatedDish) {
+        res.status(404).json({ message: 'Dish not found' });
+        return;
+      }
+      res.status(200).json(updatedDish);
+    } catch (error) {
+      res.status(500).json({ message: 'Error updating dish', error });
+    }
+};
 
-  deleteDish = async (_req: Request, res: Response): Promise<void> => {
-    res.status(200).json({ success: true, 
-      data: `this is just dummy for now a response to the delete dish by id request with dish id ${_req.params.id}` }); 
+  deleteDish = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const deletedDish = await dishService.deleteDish(id);
+      if (!deletedDish) {
+        res.status(404).json({ message: 'Dish not found' });
+        return;
+      }
+      res.status(200).json(deletedDish);
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting dish', error });
+    }
   };
 }

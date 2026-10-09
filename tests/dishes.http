@@ -7,9 +7,40 @@ content-type: application/json
 x-api-key: 1234567890
 
 {
-  "make": "Ferrari",
-  "model": "Auris",
-  "year": 2026
+  "name": "Brownie",
+  "price": 8,
+  "ingredients": [
+    {
+      "name": "chocolate",
+      "quantity": "100g"
+    },
+    {
+      "name": "vegetable oil",
+      "quantity": "50ml"
+    },
+    {
+      "name": "sugar",
+      "quantity": "50g"
+    },
+    {
+      "name": "flour",
+      "quantity": "50g"
+    }
+  ],
+  "allergens": [
+    {
+      "name": "dairy",
+      "ingredients": "chocolate"      
+    },
+    {
+      "name": "gluten",
+      "ingredients": ["flour"]
+    }
+  ],
+  "availability": {
+    "menu": "dessert",
+    "special": false
+  }
 }
 ###
 @newDish = {{postADish.response.body._id}}
@@ -26,12 +57,12 @@ content-type: application/json
 
 ###
 
-DELETE  {{endpoint}}/6ab39ad46bcda005d5b2cabd HTTP/3.0
+DELETE  {{endpoint}}/{{newDish}} HTTP/3.0
 content-type: application/json
 
 ###
 
-PUT  {{endpoint}}/6ab39ad46bcda005d5b2cabd HTTP/3.0
+PUT  {{endpoint}}/{{newDish}} HTTP/3.0
 content-type: application/json
 
 ###

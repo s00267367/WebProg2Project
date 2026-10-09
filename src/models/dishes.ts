@@ -37,7 +37,7 @@ export const createDishZSchema= z.object({
     ingredients: z.array(z.string().max(100))
     })).optional(),
   availability: z.object({
-    menu: z.enum(['breakfast', 'lunch', 'dinner']),
+    menu: z.enum(['breakfast', 'lunch', 'dinner', 'dessert']),
     special: z.boolean()
   })  
 });
@@ -54,7 +54,7 @@ export const updateDishZSchema= z.object({
     ingredients: z.array(z.string().max(100))
     })).optional(),
   availability: z.object({
-    menu: z.enum(['breakfast', 'lunch', 'dinner']),
+    menu: z.enum(['breakfast', 'lunch', 'dinner', 'dessert']),
     special: z.boolean()
   })  
 });
@@ -63,7 +63,7 @@ const dishSchema = new Schema<IDish>(
   {
     name: { type: String, required: true },
     price: { type: Number, required: true },
-    ingredients: [{ type: String, required: true }],
+    ingredients: [{ type: Object, required: true }],
     allergens: [{ type: Object, required: true }],
     availability: { type: Object, required: true }
   },
