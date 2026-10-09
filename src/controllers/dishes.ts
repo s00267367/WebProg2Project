@@ -5,6 +5,19 @@ const dishService = new DishService();
 
 export class DishController {
 
+   /**
+ * @openapi
+ * /dishes:
+ *   get:
+ *     summary: Retrieve all dishes
+ *     tags:
+ *       - dishes
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved dishes
+ *       500:
+ *         description: Internal server error
+ */
   getDishes = async (_req: Request, res: Response): Promise<void> => {
 
    try {
@@ -16,7 +29,27 @@ export class DishController {
 
   };
 
-
+  /**
+* @openapi
+* /dishes/{id}:
+*   get:
+*     summary: Get a dish by ID
+*     tags:
+*       - dishes
+*     parameters:
+*       - in: path
+*         name: id
+*         required: true
+*         schema:
+*           type: string
+*     responses:
+*       200:
+*         description: Dish found
+*       404:
+*         description: Dish not found
+*       500:
+*         description: Internal server error
+*/
   getDishById = async (req: Request, res: Response): Promise<void> => {
     try {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -30,6 +63,27 @@ export class DishController {
       res.status(500).json({ message: 'Error fetching dish', error });
     }
 };
+/**
+ * @openapi
+ * /dishes:
+ *   post:
+ *     summary: Create a new dish
+ *     tags:
+ *       - dishes
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateDishInput'
+ *     responses:
+ *       201:
+ *         description: Successfully created dish
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
 
   createDish = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -53,6 +107,27 @@ export class DishController {
       res.status(500).json({ message: 'Error updating dish', error });
     }
 };
+/**
+* @openapi
+* /dishes/{id}:
+*   delete:
+*     summary: Delete a dish by ID
+*     tags:
+*       - dishes
+*     parameters:
+*       - in: path
+*         name: id
+*         required: true
+*         schema:
+*           type: string
+*     responses:
+*       200:
+*         description: Dish deleted successfully
+*       404:
+*         description: Dish not found
+*       500:
+*         description: Internal server error
+*/
 
   deleteDish = async (req: Request, res: Response): Promise<void> => {
     try {
