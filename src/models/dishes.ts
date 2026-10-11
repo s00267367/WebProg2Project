@@ -96,15 +96,15 @@ export interface IDish {
  */
 
 export const createDishZSchema= z.object({
-  name: z.string().max(100),
+  name: z.string().min(1),
   price: z.number().min(0),
   ingredients: z.array(z.object({
-    name: z.string().max(100),
-    quantity: z.string().max(100)
+    name: z.string().min(1),
+    quantity: z.string().min(1)
   })),
   allergens: z.array(z.object({
-    name: z.string().max(100),
-    ingredients: z.array(z.string().max(100))
+    name: z.string().min(1),
+    ingredients: z.array(z.string().min(1))
     })).optional(),
   availability: z.object({
     menu: z.enum(['breakfast', 'lunch', 'dinner', 'dessert']),
@@ -184,15 +184,15 @@ export const createDishZSchema= z.object({
  */
 
 export const updateDishZSchema= z.object({
-  name: z.string().max(100),
+  name: z.string().min(1),
   price: z.number().min(0),
   ingredients: z.array(z.object({
-    name: z.string().max(100),
-    quantity: z.string().max(100)
+    name: z.string().min(1),
+    quantity: z.string().min(1)
   })).min(1),
   allergens: z.array(z.object({
-    name: z.string().max(100),
-    ingredients: z.array(z.string().max(100))
+    name: z.string().min(1),
+    ingredients: z.array(z.string().min(1))
     })).optional(),
   availability: z.object({
     menu: z.enum(['breakfast', 'lunch', 'dinner', 'dessert']),
