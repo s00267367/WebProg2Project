@@ -143,10 +143,10 @@ x-api-key: 1234567890
 #   }
 # }
 
-# {
+# { 
 #   "name": "Brownie",
 #   "price": 8,
-# "ingredients": [
+#   "ingredients": [
 #   {
 #     "name": "chocolate",
 #     "quantity": "100g"
@@ -163,7 +163,7 @@ x-api-key: 1234567890
 #     "name": "flour",
 #     "quantity": "50g"
 #   }
-# ],
+#   ],
 #   "allergens": [
 #     {
 #       "name": "dairy",
@@ -220,6 +220,7 @@ x-api-key: 1234567890
 #     "special": true
 #   }
 # }
+
 # {
 #   "name": "Chicken Curry",
 #   "price": 14.50,
@@ -257,15 +258,80 @@ x-api-key: 1234567890
 @newDish = {{postADish.response.body._id}}
 
 ###
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+x-api-key: 1234567890
+
+//fails for invalid data
+{
+  "ingredients": [
+    {
+      "name": "carrots",
+      "quantity": "100g"
+    },
+    {
+      "name": "potatoes",
+      "quantity": "100g"
+    },
+    {
+      "name": "onions",
+      "quantity": "50g"
+    },
+    {
+      "name": "vegetable stock",
+      "quantity": "300ml"
+    },
+    {
+      "name": "cream",
+      "quantity": "30ml"
+    }
+  ],
+  "allergens": [
+    {
+      "name": "dairy",
+      "ingredients": ["cream"]
+    },
+    {
+      "name": "possible celery",
+      "ingredients": ["vegetable stock"]
+    }
+  ],
+  "availability": {
+    "menu": "lunch",
+    "special": false
+  }
+}
+###
 GET  {{endpoint}} HTTP/3.0
 content-type: application/json
 x-api-key: 1234567890
 ###
 GET  {{endpoint}}/{{newDish}} HTTP/3.0
 content-type: application/json
-
-
-
+###
+GET  {{endpoint}}/menu/breakfast HTTP/3.0
+content-type: application/json
+###
+GET  {{endpoint}}/menu/lunch HTTP/3.0
+content-type: application/json
+###
+GET  {{endpoint}}/menu/dinner HTTP/3.0
+content-type: application/json
+###
+GET  {{endpoint}}/menu/dessert HTTP/3.0
+content-type: application/json
+###
+GET  {{endpoint}}/menu/g HTTP/3.0
+content-type: application/json
+###
+GET  {{endpoint}}/special/true HTTP/3.0
+content-type: application/json
+###
+GET  {{endpoint}}/special/false HTTP/3.0
+content-type: application/json
+###
+GET  {{endpoint}}/special/notbool HTTP/3.0
+content-type: application/json
 ###
 
 DELETE  {{endpoint}}/{{newDish}} HTTP/3.0
@@ -279,6 +345,93 @@ content-type: application/json
 
 PUT  {{endpoint}}/{{newDish}} HTTP/3.0
 content-type: application/json
+
+{
+  "name": "Vegetable Soup",
+  "price": 6.00,
+  "ingredients": [
+    {
+      "name": "parsnips",
+      "quantity": "100g"
+    },
+    {
+      "name": "potatoes",
+      "quantity": "100g"
+    },
+    {
+      "name": "onions",
+      "quantity": "50g"
+    },
+    {
+      "name": "vegetable stock",
+      "quantity": "300ml"
+    },
+    {
+      "name": "cream",
+      "quantity": "30ml"
+    }
+  ],
+  "allergens": [
+    {
+      "name": "dairy",
+      "ingredients": ["cream"]
+    },
+    {
+      "name": "possible celery",
+      "ingredients": ["vegetable stock"]
+    }
+  ],
+  "availability": {
+    "menu": "lunch",
+    "special": false
+  }
+}
+
+###
+
+PUT  {{endpoint}}/6acbec704c2f25fe28d5954b HTTP/3.0
+content-type: application/json
+
+{
+  "name": "Vegetable Soup",
+  "price": 6.00,
+  "ingredients": [
+    {
+      "name": "parsnips",
+      "quantity": "100g"
+    },
+    {
+      "name": "potatoes",
+      "quantity": "100g"
+    },
+    {
+      "name": "onions",
+      "quantity": "50g"
+    },
+    {
+      "name": "vegetable stock",
+      "quantity": "300ml"
+    },
+    {
+      "name": "cream",
+      "quantity": "30ml"
+    }
+  ],
+  "allergens": [
+    {
+      "name": "dairy",
+      "ingredients": ["cream"]
+    },
+    {
+      "name": "possible celery",
+      "ingredients": ["vegetable stock"]
+    }
+  ],
+  "availability": {
+    "menu": "lunch",
+    "special": false
+  }
+}
 
 ###
 GET  http://localhost:3000/ping HTTP/3.0

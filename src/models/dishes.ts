@@ -112,6 +112,77 @@ export const createDishZSchema= z.object({
   })  
 });
 
+/**
+ * 
+ * @openapi
+ * components:
+ *   schemas:
+ *     UpdateDishInput:
+ *       type: object
+ *       required:
+ *         - name
+ *         - price
+ *         - ingredients
+ *         - allergens
+ *         - availability
+ *       properties:
+ *         name:
+ *           type: string
+ *           example: Chicken Curry
+ *         price:
+ *           type: number
+ *           example: 14.50
+ *         ingredients:
+ *           type: array
+ *           items:
+ *             type: object
+ *             required:
+ *               - name
+ *               - quantity
+ *             properties:
+ *               name:
+ *                 type: string
+ *               quantity:
+ *                 type: string
+ *           example:
+ *             - name: Chicken
+ *               quantity: 200g
+ *             - name: Cream
+ *               quantity: 100ml
+ *             - name: Rice
+ *               quantity: 150g
+ *         allergens:
+ *           type: array
+ *           items:
+ *             type: object
+ *             required:
+ *               - name
+ *               - ingredients
+ *             properties:
+ *               name:
+ *                 type: string
+ *               ingredients:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *           example:
+ *             - name: Dairy
+ *               ingredients:
+ *                 - Cream
+ *         availability:
+ *           type: object
+ *           required:
+ *             - menu
+ *             - special
+ *           properties:
+ *             menu:
+ *               type: string
+ *               example: dinner
+ *             special:
+ *               type: boolean
+ *               example: false
+ */
+
 export const updateDishZSchema= z.object({
   name: z.string().max(100),
   price: z.number().min(0),

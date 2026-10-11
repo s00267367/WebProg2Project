@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { DishService } from '../services/dishes';
-import { createDishZSchema } from '../models/dishes';
+import { createDishZSchema, updateDishZSchema } from '../models/dishes';
 
 const dishService = new DishService();
 
 export class DishController {
 
-   /**
+/**
  * @openapi
  * /dishes:
  *   get:
@@ -196,8 +196,37 @@ export class DishController {
     }
  };
 
+ /**
+ * @openapi
+ * /dishes/{id}:
+ *   put:
+ *     summary: Update a dish
+ *     tags:
+ *       - dishes
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateDishInput'
+ *     responses:
+ *       200:
+ *         description: Successfully updated dish
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Dish not found
+ *       500:
+ *         description: Internal server error
+ */
   updateDish = async (req: Request, res: Response): Promise<void> => {
-    const validation = createDishZSchema.safeParse(req.body);
+    const validation = updateDishZSchema.safeParse(req.body);
 
     console.log(validation);
 
@@ -205,7 +234,7 @@ export class DishController {
       res.status(400).json({ message: 'Invalid dish data', errors: validation.error.issues });
       return;
     }
-    
+
     try {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       const updatedDish = await dishService.updateDish(id, req.body);

@@ -98,9 +98,48 @@ describe('GET /dishes', () => {
 
 });
 
-describe('GET /dishes/menu/:menu', () => {
+describe('GET /dishes/menu/breakfast', () => {
 
-    it('returns all dishes for a specific menu', async () => {
+    it('returns all dishes for the breakfast menu', async () => {
+
+        const response = await request(app)
+            .get('/api/v1/dishes/menu/breakfast');
+
+        expect(response.status).toBe(200);
+
+    });
+
+});
+
+describe('GET /dishes/menu/lunch', () => {
+
+    it('returns all dishes for the lunch menu', async () => {
+
+        const response = await request(app)
+            .get('/api/v1/dishes/menu/lunch');
+
+        expect(response.status).toBe(200);
+
+    });
+
+});
+
+describe('GET /dishes/menu/dinner', () => {
+
+    it('returns all dishes for the dinner menu', async () => {
+
+        const response = await request(app)
+            .get('/api/v1/dishes/menu/dinner');
+
+        expect(response.status).toBe(200);
+
+    });
+
+});
+
+describe('GET /dishes/menu/dessert', () => {
+
+    it('returns all dishes for the dessert menu', async () => {
 
         const response = await request(app)
             .get('/api/v1/dishes/menu/dessert');
@@ -124,11 +163,22 @@ describe('GET /dishes/menu/:menu', () => {
 
 });
 
-describe('GET /dishes/special/:special', () => {
+describe('GET /dishes/special/true', () => {
     it('returns all dishes for a specific special status', async () => {
 
         const response = await request(app)
             .get('/api/v1/dishes/special/true');
+
+        expect(response.status).toBe(200);
+
+    });
+});
+
+describe('GET /dishes/special/false', () => {
+    it('returns all dishes for a false special status', async () => {
+
+        const response = await request(app)
+            .get('/api/v1/dishes/special/false');
 
         expect(response.status).toBe(200);
 
