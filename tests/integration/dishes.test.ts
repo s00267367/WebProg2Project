@@ -317,7 +317,7 @@ describe('DELETE /dishes/:id', () => {
 describe('DELETE /dishes/:id', () => {
     it('fails to delete a dish by ID', async () => {
         const response = await request(app)
-            .delete(`/api/v1/dishes/`);
+            .delete(`/api/v1/dishes/6acbec704c2f25fe28d5954b`);
         expect(response.status).toBe(404);
     });
 });
