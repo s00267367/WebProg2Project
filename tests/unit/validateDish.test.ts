@@ -107,9 +107,10 @@ describe('Test Dish Validation', () => {
     it('should fail for the unparsable special bool ', () => {
 
         expect(() => createDishZSchema.parse(
-            { ...validDish, ...validDish.availability,
-        "special": "just a string"
-        })).toThrow();
+            { ...validDish, availability: {
+                ...validDish.availability,
+                special: 'not a bool'
+            }})).toThrow();
     });
 
 
