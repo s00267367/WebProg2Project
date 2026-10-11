@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { DishService } from '../services/dishes';
+import { createDishZSchema } from '../models/dishes';
 
 const dishService = new DishService();
 
@@ -56,7 +57,11 @@ export class DishController {
 
    try {
       const menu = Array.isArray(req.params.menu) ? req.params.menu[0] : req.params.menu;
-      const dishes = await  dishService.getDishesByMenu(menu);
+      if (menu !== 'breakfast' && menu !== 'lunch' && menu !== 'dinner' && menu !== 'dessert') {
+        res.status(400).json({ message: 'Invalid menu value. Must be "breakfast", "lunch", "dinner", or "dessert".' });
+        return;
+      }
+      const dishes = await dishService.getDishesByMenu(menu);
       if (!dishes) {
         res.status(404).json({ message: 'Dishes not found' });
         return;
@@ -174,6 +179,15 @@ export class DishController {
  */
 
   createDish = async (req: Request, res: Response): Promise<void> => {
+    const validation = createDishZSchema.safeParse(req.body);
+
+    console.log(validation);
+
+    if (!validation.success) {
+      res.status(400).json({ message: 'Invalid dish data', errors: validation.error.issues });
+      return;
+    }
+
     try {
       const newDish = await dishService.createDish(req.body);
       res.status(201).json(newDish);
@@ -183,6 +197,15 @@ export class DishController {
  };
 
   updateDish = async (req: Request, res: Response): Promise<void> => {
+    const validation = createDishZSchema.safeParse(req.body);
+
+    console.log(validation);
+
+    if (!validation.success) {
+      res.status(400).json({ message: 'Invalid dish data', errors: validation.error.issues });
+      return;
+    }
+    
     try {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       const updatedDish = await dishService.updateDish(id, req.body);

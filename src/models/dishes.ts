@@ -118,7 +118,7 @@ export const updateDishZSchema= z.object({
   ingredients: z.array(z.object({
     name: z.string().max(100),
     quantity: z.string().max(100)
-  })),
+  })).min(1),
   allergens: z.array(z.object({
     name: z.string().max(100),
     ingredients: z.array(z.string().max(100))

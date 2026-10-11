@@ -4,22 +4,6 @@ import { ObjectId } from "mongodb";
 
 let dishId : ObjectId;
 
-
-describe('GET /dishes', () => {
-
-    it('returns all dishes', async () => {
-
-        const response = await request(app)
-            .get('/api/v1/dishes');
-
-        expect(response.status).toBe(200);
-
-    });
-
-});
-
-
-
 describe ('POST /dishes', () => {
 
     it('creates a valid dish', async () => {
@@ -71,6 +55,96 @@ describe ('POST /dishes', () => {
 
 });
 
+describe ('POST /dishes', () => {
+
+    it('it fails to create a valid dish due to missing ingredient field', async () => {
+        const response = await request(app)
+            .post('/api/v1/dishes')
+            .send({
+                name: "Brownie",
+                price: 8, 
+                              
+                allergens: [
+                    {
+                    name: "dairy",
+                    ingredients: ["chocolate"]    
+                    },
+                    {
+                    name: "gluten",
+                    ingredients: ["flour"]
+                    }
+                ],
+                availability: {
+                    menu: "dessert",
+                    special: false
+                }
+            });
+
+        expect(response.status).toBe(400);
+    });
+
+});
+
+describe('GET /dishes', () => {
+
+    it('returns all dishes', async () => {
+
+        const response = await request(app)
+            .get('/api/v1/dishes');
+
+        expect(response.status).toBe(200);
+
+    });
+
+});
+
+describe('GET /dishes/menu/:menu', () => {
+
+    it('returns all dishes for a specific menu', async () => {
+
+        const response = await request(app)
+            .get('/api/v1/dishes/menu/dessert');
+
+        expect(response.status).toBe(200);
+
+    });
+
+});
+
+describe('GET /dishes/menu/:menu', () => {
+
+    it('fails to return all dishes for an invalid menu', async () => {
+
+        const response = await request(app)
+            .get('/api/v1/dishes/menu/invalid');
+
+        expect(response.status).toBe(400);
+
+    });
+
+});
+
+describe('GET /dishes/special/:special', () => {
+    it('returns all dishes for a specific special status', async () => {
+
+        const response = await request(app)
+            .get('/api/v1/dishes/special/true');
+
+        expect(response.status).toBe(200);
+
+    });
+});
+
+describe('GET /dishes/special/:special', () => {
+    it('fails to return dishes for an invalid special status', async () => {
+
+        const response = await request(app)
+            .get('/api/v1/dishes/special/invalid');
+
+        expect(response.status).toBe(400);
+    });
+});
+
 describe('GET /dishes/:id', () => {
     it('returns a dish by ID', async () => {
 
@@ -79,6 +153,15 @@ describe('GET /dishes/:id', () => {
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('_id', dishId.toString());
+    });
+});
+
+describe('GET /dishes/:id', () => {
+    it('fails to return a dish by ID', async () => {
+        const response = await request(app)
+            .get(`/api/v1/dishes/6acbec704c2f25fe28d5954b`);
+
+        expect(response.status).toBe(404);
     });
 });
 
@@ -131,10 +214,110 @@ describe ('PUT /dishes/:id', () => {
     });
 });
 
+describe ('PUT /dishes/:id', () => {
+
+    it('fails to update a dish by ID as it cannot be found', async () => {
+        const response = await request(app)
+            .put(`/api/v1/dishes/6acbec704c2f25fe28d5954b`)
+            .send({
+                name: "Updated Brownie",
+                price: 10,
+                ingredients: [
+                    {
+                    name: "chocolate",
+                    quantity: "100g"
+                    },
+                    {
+                    name: "vegetable oil",
+                    quantity: "50ml"
+                    },
+                    {
+                    name: "sugar",
+                    quantity: "50g"
+                    },
+                    {
+                    name: "flour",
+                    quantity: "50g"
+                    }
+                ],
+                allergens: [
+                    {
+                    name: "dairy",
+                    ingredients: ["chocolate"]    
+                    },
+                    {
+                    name: "gluten",
+                    ingredients: ["flour"]
+                    }
+                ],
+                availability: {
+                    menu: "dessert",
+                    special: true
+                }
+            });
+
+        expect(response.status).toBe(404);
+    });
+});
+
+describe ('PUT /dishes/:id', () => {
+
+    it('fails to update a dish by ID due to invalid data (no name provided)', async () => {
+        const response = await request(app)
+            .put(`/api/v1/dishes/${dishId}`)
+            .send({
+                
+                price: 10,
+                ingredients: [
+                    {
+                    name: "chocolate",
+                    quantity: "100g"
+                    },
+                    {
+                    name: "vegetable oil",
+                    quantity: "50ml"
+                    },
+                    {
+                    name: "sugar",
+                    quantity: "50g"
+                    },
+                    {
+                    name: "flour",
+                    quantity: "50g"
+                    }
+                ],
+                allergens: [
+                    {
+                    name: "dairy",
+                    ingredients: ["chocolate"]    
+                    },
+                    {
+                    name: "gluten",
+                    ingredients: ["flour"]
+                    }
+                ],
+                availability: {
+                    menu: "dessert",
+                    special: true
+                }
+            });
+
+        expect(response.status).toBe(400);
+    });
+});
+
 describe('DELETE /dishes/:id', () => {
     it('deletes a dish by ID', async () => {
         const response = await request(app)
             .delete(`/api/v1/dishes/${dishId}`);
         expect(response.status).toBe(200);
+    });
+});
+
+describe('DELETE /dishes/:id', () => {
+    it('fails to delete a dish by ID', async () => {
+        const response = await request(app)
+            .delete(`/api/v1/dishes/`);
+        expect(response.status).toBe(404);
     });
 });

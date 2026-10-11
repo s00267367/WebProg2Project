@@ -108,7 +108,7 @@ describe('Test Dish Validation', () => {
 
         expect(() => createDishZSchema.parse(
             { ...validDish, ...validDish.availability,
-        "special": "yes"
+        "special": "just a string"
         })).toThrow();
     });
 
