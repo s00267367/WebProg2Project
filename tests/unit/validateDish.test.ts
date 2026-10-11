@@ -1,40 +1,45 @@
 import { createDishZSchema } from "../../src/models/dishes";
 
 const validDish = {
-    "name": "Brownie",
-  "price": 8,
+  "name": "Vegetable Soup",
+  "price": 6.00,
   "ingredients": [
     {
-      "name": "chocolate",
+      "name": "carrots",
       "quantity": "100g"
     },
     {
-      "name": "vegetable oil",
-      "quantity": "50ml"
+      "name": "potatoes",
+      "quantity": "100g"
     },
     {
-      "name": "sugar",
+      "name": "onions",
       "quantity": "50g"
     },
     {
-      "name": "flour",
-      "quantity": "50g"
+      "name": "vegetable stock",
+      "quantity": "300ml"
+    },
+    {
+      "name": "cream",
+      "quantity": "30ml"
     }
   ],
   "allergens": [
     {
       "name": "dairy",
-      "ingredients": ["chocolate"]    
+      "ingredients": ["cream"]
     },
     {
-      "name": "gluten",
-      "ingredients": ["flour"]
+      "name": "possible celery",
+      "ingredients": ["vegetable stock"]
     }
   ],
   "availability": {
-    "menu": "dessert",
+    "menu": "lunch",
     "special": false
   }
+
 }
 
 describe('Test Dish Validation', () => {
@@ -102,10 +107,9 @@ describe('Test Dish Validation', () => {
     it('should fail for the unparsable special bool ', () => {
 
         expect(() => createDishZSchema.parse(
-            { ...validDish, "availability": {
-        "menu": "dinner",
+            { ...validDish, ...validDish.availability,
         "special": "yes"
-        }})).toThrow();
+        })).toThrow();
     });
 
 

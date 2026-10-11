@@ -27,9 +27,40 @@ describe ('POST /dishes', () => {
         const response = await request(app)
             .post('/api/v1/dishes')
             .send({
-                make: "Ford",
-                model: "Focus",
-                year: 2020
+                name: "Brownie",
+                price: 8,
+                ingredients: [
+                    {
+                    name: "chocolate",
+                    quantity: "100g"
+                    },
+                    {
+                    name: "vegetable oil",
+                    quantity: "50ml"
+                    },
+                    {
+                    name: "sugar",
+                    quantity: "50g"
+                    },
+                    {
+                    name: "flour",
+                    quantity: "50g"
+                    }
+                ],
+                allergens: [
+                    {
+                    name: "dairy",
+                    ingredients: ["chocolate"]    
+                    },
+                    {
+                    name: "gluten",
+                    ingredients: ["flour"]
+                    }
+                ],
+                availability: {
+                    menu: "dessert",
+                    special: false
+                }
             });
 
 
@@ -57,15 +88,46 @@ describe ('PUT /dishes/:id', () => {
         const response = await request(app)
             .put(`/api/v1/dishes/${dishId}`)
             .send({
-                make: "Toyota",
-                model: "Camry",
-                year: 2021
+                name: "Updated Brownie",
+                price: 10,
+                ingredients: [
+                    {
+                    name: "chocolate",
+                    quantity: "100g"
+                    },
+                    {
+                    name: "vegetable oil",
+                    quantity: "50ml"
+                    },
+                    {
+                    name: "sugar",
+                    quantity: "50g"
+                    },
+                    {
+                    name: "flour",
+                    quantity: "50g"
+                    }
+                ],
+                allergens: [
+                    {
+                    name: "dairy",
+                    ingredients: ["chocolate"]    
+                    },
+                    {
+                    name: "gluten",
+                    ingredients: ["flour"]
+                    }
+                ],
+                availability: {
+                    menu: "dessert",
+                    special: true
+                }
             });
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('make', 'Toyota');
-        expect(response.body).toHaveProperty('model', 'Camry');
-        expect(response.body).toHaveProperty('year', 2021);
+        expect(response.body).toHaveProperty('name', 'Updated Brownie');
+        expect(response.body).toHaveProperty('price', 10);
+        expect(response.body).toHaveProperty('availability.special', true);
     });
 });
 

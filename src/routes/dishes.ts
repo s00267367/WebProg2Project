@@ -8,6 +8,7 @@ const dishController = new DishController();
 router.get('/', dishController.getDishes);
 
 router.get('/:id', dishController.getDishById);
+router.get('/menu/:menu', dishController.getDishesByMenu);
 router.post('/', dishController.createDish);
 router.put('/:id', dishController.updateDish);
 router.delete('/:id', dishController.deleteDish);

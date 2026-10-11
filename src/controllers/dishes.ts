@@ -30,6 +30,58 @@ export class DishController {
   };
 
   /**
+   * @openapi
+   * /dishes/menu/{menu}:
+   */
+  getDishesByMenu = async (req: Request, res: Response): Promise<void> => {
+
+   try {
+      const menu = Array.isArray(req.params.menu) ? req.params.menu[0] : req.params.menu;
+      const dishes = await  dishService.getDishesByMenu(menu);
+      if (!dishes) {
+        res.status(404).json({ message: 'Dishes not found' });
+        return;
+      }
+      if (dishes.length == 0){
+        res.status(200).json({ message: 'No dishes found for the specified menu' });
+        return;
+      }
+      else{
+        res.status(200).json(dishes);
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching dish', error });
+    }
+
+  };
+
+  /**
+   * @openapi
+   * /dishes/special/{special}:
+   */
+  getDishesBySpecial = async (req: Request, res: Response): Promise<void> => {
+
+   try {
+      const special = Array.isArray(req.params.special) ? req.params.special[0] : req.params.special;
+      const dishes = await  dishService.getDishesBySpecial(special);
+      if (!dishes) {
+        res.status(404).json({ message: 'Dishes not found' });
+        return;
+      }
+      if (dishes.length == 0){
+        res.status(200).json({ message: 'No dishes found for the specified menu' });
+        return;
+      }
+      else{
+        res.status(200).json(dishes);
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching dish', error });
+    }
+
+  };
+
+  /**
 * @openapi
 * /dishes/{id}:
 *   get:

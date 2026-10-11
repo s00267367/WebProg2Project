@@ -11,6 +11,24 @@ export class DishService {
     return await DishModel.findById(id).lean();
   }
 
+  async getDishesByMenu(menu: string): Promise<IDish[]> {
+    return await DishModel.find({ 'availability.menu': menu }).lean();
+  }
+
+  async getDishesBySpecial(special: string): Promise<IDish[]> {
+    if(special !== 'true' && special !== 'false'){
+      throw new Error('Invalid special value. Must be "true" or "false".');
+    }
+    let boolSpecial:boolean;
+    if(special === 'true'){
+      boolSpecial = true;
+    }
+    else{
+      boolSpecial = false;
+    }
+    return await DishModel.find({ 'availability.special': boolSpecial }).lean();
+  }
+
   async createDish(dishData: IDish): Promise<HydratedDocument<IDish>> {
     const dish = new DishModel(dishData);
     return await dish.save();
