@@ -3,10 +3,12 @@ import dishRoutes from "./routes/dishes";
 import {logURL} from './middleware/log.middleware';
 import swaggerUi from 'swagger-ui-express';
 import {swaggerSpec} from './config/swagger';
+import cors from 'Cors';
 
 export const app: Application = express();
 
 app.use(express.json());
+app.use(cors());
 app.use('/api/v1/dishes', logURL, dishRoutes);
 app.use(logURL);
 app.use(

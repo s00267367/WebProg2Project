@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
-  	"test:watch": "vitest",    
+    "test:watch": "vitest",
     "build": "tsc",
     "start": "node build/server.js",
     "dev": "tsx watch src/server.ts",
@@ -16,6 +16,8 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@types/cors": "^2.8.19",
+    "cors": "^2.8.6",
     "dotenv": "^18.0.3",
     "express": "^5.2.1",
     "mongoose": "^9.11.1",
