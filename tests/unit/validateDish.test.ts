@@ -46,71 +46,76 @@ describe('Test Dish Validation', () => {
     it('should pass for the following valid data', () => {
 
         expect(() => createDishZSchema.parse(
-            validDish)).not.toThrow();
+            {body: validDish})).not.toThrow();
     });
-    it('should fail for the following data - no source ingredient for allergens', () => {
 
+    it('should fail for the following data - no source ingredient for allergens', () => {
         expect(() => createDishZSchema.parse(
-            { ...validDish, "allergens": [
-    {
-      "name": "dairy",
-      "ingredients": undefined    
-    },
-    {
-      "name": "gluten",
-      "ingredients": undefined
-    }
-    ] })).toThrow();
+          { body: {...validDish, "allergens": [
+          {
+            "name": "dairy",
+            "ingredients": undefined    
+          },
+          {
+            "name": "gluten",
+            "ingredients": undefined
+          }
+          ]
+          }})).toThrow();
     });
+
     it('should fail for the menu not being in the enum ', () => {
         expect(() => createDishZSchema.parse(
-        { ...validDish, "availability": {
-    "menu": "Tuesday",
-    "special": false
-    }})).toThrow();
+          { body: {...validDish, "availability": {
+          "menu": "Tuesday",
+          "special": false
+          }}})).toThrow();
     });
+
     it('should fail for the unparsaable price ', () => {
-
         expect(() => createDishZSchema.parse(
-            { ...validDish, "price": 'wrong price' })).toThrow();
+          { body: {...validDish, "price": 'wrong price' }})).toThrow();
     });
+
     it('should fail for the too short price ', () => {
-
         expect(() => createDishZSchema.parse(
-            { ...validDish, "price": '' })).toThrow();
+            { body: {...validDish, "price": '' }})).toThrow();
     });
+
     it('should fail for the missing name ', () => {
 
         expect(() => createDishZSchema.parse(
-            { ...validDish, "name": undefined })).toThrow();
+            { body: {...validDish, "name": undefined }})).toThrow();
     });
-    it('should fail for the missing price ', () => {
 
+    it('should fail for the missing price ', () => {
         expect(() => createDishZSchema.parse(
-            { ...validDish, "price": undefined })).toThrow();
+            { body: {...validDish, "price": undefined }})).toThrow();
     });
+
     it('should fail for the missing ingredients ', () => {
 
         expect(() => createDishZSchema.parse(
-            { ...validDish, "ingredients": undefined })).toThrow();
+            { body: {...validDish, "ingredients": undefined }})).toThrow();
     });
-    it('should pass for the missing allergens ', () => {
 
+    it('should pass for the missing allergens ', () => {
         expect(() => createDishZSchema.parse(
-            { ...validDish, "allergens": undefined })).not.toThrow();
+            { body: {...validDish, "allergens": undefined }})).not.toThrow();
     });
+
     it('should fail for the missing availability ', () => {
 
         expect(() => createDishZSchema.parse(
-            { ...validDish, "availability": undefined })).toThrow();
+            { body: {...validDish, "availability": undefined }})).toThrow();
     });
-    it('should fail for the unparsable special bool ', () => {
 
+    it('should fail for the unparsable special bool ', () => {
         expect(() => createDishZSchema.parse(
-            { ...validDish, availability: {
+            { body: {...validDish, availability: {
                 ...validDish.availability,
                 special: 'not a bool'
-            }})).toThrow();
+            }}})).toThrow();
     });
 
 
