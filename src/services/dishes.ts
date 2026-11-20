@@ -1,5 +1,6 @@
 import { DishModel, IDish } from '../models/dishes'
 import { HydratedDocument } from 'mongoose';
+import { NotFoundError } from '../utils/app-error';
 
 export class DishService {
 
@@ -7,14 +8,19 @@ export class DishService {
     return await DishModel.find().lean(); 
   }
 
-  async getDishById(id: string): Promise<IDish | null> {
-    return await DishModel.findById(id).lean();
+  async getDishById(id: string): Promise<IDish> {
+    const dish = await DishModel.findById(id).lean();
+    if(!dish) throw new NotFoundError('Dish');
+    return dish;
   }
 
   async getDishesByMenu(menu: string): Promise<IDish[]> {
-    return await DishModel.find({ 'availability.menu': menu }).lean();
+    const dishes = await DishModel.find({ 'availability.menu': menu }).lean();
+    if(!dishes) throw new NotFoundError('Dishes');
+    return dishes;
   }
 
+  //Note: validate in middleware
   async getDishesBySpecial(special: string): Promise<IDish[]> {
     if(special !== 'true' && special !== 'false'){
       throw new Error('Invalid special value. Must be "true" or "false".');
@@ -34,12 +40,16 @@ export class DishService {
     return await dish.save();
   }
 
-  async updateDish(id: string, dishData: Partial<IDish>): Promise<IDish | null> {
-    return await DishModel.findByIdAndUpdate(id, dishData, { returnDocument: 'after' }).lean();
+  async updateDish(id: string, dishData: Partial<IDish>): Promise<IDish> {
+    const dish = await DishModel.findByIdAndUpdate(id, dishData, { returnDocument: 'after' }).lean();
+    if(!dish) throw new NotFoundError('Dish');
+    return dish;
   }
 
-  async deleteDish(id: string): Promise<IDish | null> {
-    return await DishModel.findByIdAndDelete(id).lean();
+  async deleteDish(id: string): Promise<IDish> {
+    const dish = await DishModel.findByIdAndDelete(id).lean();
+    if(!dish) throw new NotFoundError('Dish');
+    return dish
   }
   
 }

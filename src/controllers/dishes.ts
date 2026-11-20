@@ -144,18 +144,10 @@ export class DishController {
 *         description: Internal server error
 */
   getDishById = async (req: Request, res: Response): Promise<void> => {
-    try {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-      const dish = await  dishService.getDishById(id);
-      if (!dish) {
-        res.status(404).json({ message: 'Dish not found' });
-        return;
-      }
+      const dish = await dishService.getDishById(id);
       res.status(200).json(dish);
-    } catch (error) {
-      res.status(500).json({ message: 'Error fetching dish', error });
-    }
-};
+  }; 
 /**
  * @openapi
  * /dishes:

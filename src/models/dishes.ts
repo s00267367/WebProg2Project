@@ -24,6 +24,14 @@ export interface IDish {
   availability: IAvailability;
 }
 
+export const dishParamsSchema = z.object({
+  params: z.object({
+    id: z
+      .string()
+      .regex(/^[0-9a-fA-F]{24}$/, 'Invalid ObjectId')
+  })
+});
+
 /**
  * 
  * @openapi
