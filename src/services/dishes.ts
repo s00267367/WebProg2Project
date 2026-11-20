@@ -7,8 +7,6 @@ export class DishService {
   async getDishes(menu?:string, special? :boolean): Promise<IDish[]> {
     const filter: Record<string, unknown> = {};
 
-    
-
     if (menu !== undefined) {
       filter['availability.menu'] = menu;
     }

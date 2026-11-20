@@ -8,15 +8,29 @@ export class DishController {
 /**
  * @openapi
  * /dishes:
- *   get:
- *     summary: Retrieve all dishes
- *     tags:
- *       - dishes
- *     responses:
- *       200:
- *         description: Successfully retrieved dishes
- *       500:
- *         description: Internal server error
+  get:
+    summary: Retrieve dishes, optionally filtered by menu or special status
+    tags:
+      - dishes
+    parameters:
+      - in: query
+        name: menu
+        required: false
+        schema:
+          type: string
+          enum: [breakfast, lunch, dinner, dessert]
+      - in: query
+        name: special
+        required: false
+        schema:
+          type: boolean
+    responses:
+      200:
+        description: Successfully retrieved dishes
+      400:
+        description: Invalid query parameters
+      500:
+        description: Internal server error
  */
   getDishes = async (req: Request, res: Response): Promise<void> => {
     const { menu, special } = req.query;
