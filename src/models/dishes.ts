@@ -24,6 +24,13 @@ export interface IDish {
   availability: IAvailability;
 }
 
+export const dishQuerySchema = z.object({
+  query: z.object({
+    menu: z.enum(['lunch', 'breakfast', 'dinner', 'dessert']).optional(),
+    special: z.enum(['true', 'false']).optional()
+  })
+})
+
 export const dishParamsSchema = z.object({
   params: z.object({
     id: z

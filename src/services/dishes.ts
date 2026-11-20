@@ -4,8 +4,20 @@ import { NotFoundError } from '../utils/app-error';
 
 export class DishService {
 
-  async getAllDishes(): Promise<IDish[]> {
-    return await DishModel.find().lean(); 
+  async getDishes(menu?:string, special? :boolean): Promise<IDish[]> {
+    const filter: Record<string, unknown> = {};
+
+    
+
+    if (menu !== undefined) {
+      filter['availability.menu'] = menu;
+    }
+
+    if (special !== undefined) {
+      filter['availability.special'] = special;
+    }
+
+    return await DishModel.find(filter);
   }
 
   async getDishById(id: string): Promise<IDish> {

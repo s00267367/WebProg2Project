@@ -18,101 +18,15 @@ export class DishController {
  *       500:
  *         description: Internal server error
  */
-  getDishes = async (_req: Request, res: Response): Promise<void> => {
-      const dishes = await dishService.getAllDishes();
-      res.status(200).json(dishes);
-  };
+  getDishes = async (req: Request, res: Response): Promise<void> => {
+    const { menu, special } = req.query;
 
- /**
- * @openapi
- * /dishes/menu/{menu}:
- *   get:
- *     summary: Retrieve dishes by menu
- *     tags:
- *       - dishes
- *     parameters:
- *       - in: path
- *         name: menu
- *         required: true
- *         schema:
- *           type: string
- *           enum: [breakfast, lunch, dinner, dessert]
- *     responses:
- *       200:
- *         description: Successfully retrieved dishes
- *       404:
- *         description: Dishes not found
- *       500:
- *         description: Internal server error
- */
-  
-  getDishesByMenu = async (req: Request, res: Response): Promise<void> => {
+    const dishes = await dishService.getDishes(
+      menu as string | undefined,
+      special === undefined ? undefined : special === 'true'
+    );
 
-   try {
-      const menu = Array.isArray(req.params.menu) ? req.params.menu[0] : req.params.menu;
-      if (menu !== 'breakfast' && menu !== 'lunch' && menu !== 'dinner' && menu !== 'dessert') {
-        res.status(400).json({ message: 'Invalid menu value. Must be "breakfast", "lunch", "dinner", or "dessert".' });
-        return;
-      }
-      const dishes = await dishService.getDishesByMenu(menu);
-      if (!dishes) {
-        res.status(404).json({ message: 'Dishes not found' });
-        return;
-      }
-      if (dishes.length == 0){
-        res.status(200).json({ message: 'No dishes found for the specified menu' });
-        return;
-      }
-      else{
-        res.status(200).json(dishes);
-      }
-    } catch (error) {
-      res.status(500).json({ message: 'Error fetching dish', error });
-    }
-
-  };
-
-  /**
-   * @openapi
-   * /dishes/special/{special}:
-   *   get:
-   *     summary: Retrieve dishes by special status
-   *     tags:
-   *       - dishes
-   *     parameters:
-   *       - in: path
-   *         name: special
-   *         required: true
-   *         schema:
-   *           type: string
-   *     responses:
-   *       200:
-   *         description: Successfully retrieved dishes
-   *       400:
-   *         description: Invalid special value. Must be "true" or "false".
-   *       404:
-   *         description: Dishes not found
-   *       500:
-   *         description: Internal server error
-   */
-  getDishesBySpecial = async (req: Request, res: Response): Promise<void> => {
-
-   try {
-      const special = Array.isArray(req.params.special) ? req.params.special[0] : req.params.special;
-      if(special !== 'true' && special !== 'false'){
-        res.status(400).json({ message: 'Invalid special value. Must be "true" or "false".' });
-        return;
-      }
-      const dishes = await  dishService.getDishesBySpecial(special);
-      if (!dishes) {
-        res.status(404).json({ message: 'Dishes not found' });
-        return;
-      }
-      res.status(200).json(dishes);
-    } catch (error) {
-      res.status(500).json({ message: 'Error fetching dish', error });
-    }
-
+    res.status(200).json(dishes);
   };
 
   /**

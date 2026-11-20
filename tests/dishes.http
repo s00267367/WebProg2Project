@@ -312,7 +312,7 @@ content-type: application/json
 GET  {{endpoint}}/menu/breakfast HTTP/3.0
 content-type: application/json
 ###
-GET  {{endpoint}}/menu/lunch HTTP/3.0
+GET  {{endpoint}}?menu=lunch&special=true HTTP/3.0
 content-type: application/json
 ###
 GET  {{endpoint}}/menu/dinner HTTP/3.0
